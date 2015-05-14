@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+
+  <issue id="InvalidPackage">
+    <!--Invalid package reference in library; not included in Android: java.nio.file. Referenced from okio.Okio.-->
+    <ignore regexp="dagger" />
+  </issue>
+
+</lint>
