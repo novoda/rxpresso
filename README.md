@@ -1,5 +1,4 @@
-# RxPresso [![](https://ci.novoda.com/buildStatus/icon?job=rxpresso)](https://ci.novoda.com/job/rxpresso/lastBuild/console)
-[![Apache Licence 2.0](https://raw.githubusercontent.com/novoda/novoda/master/assets/btn_apache_lisence.png)](LICENSE.txt)
+# RxPresso [![](https://ci.novoda.com/buildStatus/icon?job=rxpresso)](https://ci.novoda.com/job/rxpresso/lastBuild/console) [![Apache Licence 2.0](https://raw.githubusercontent.com/novoda/novoda/master/assets/btn_apache_lisence.png)](LICENSE.txt)
 
 Mocks/Assertions for RxJava testing
 
