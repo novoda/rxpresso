@@ -18,9 +18,11 @@ android {
 }
 
 dependencies {
-    compile 'com.novoda:rxmocks:0.1.2'
+    compile 'com.novoda:rxmocks:0.1.3'
     compile 'io.reactivex:rxjava:1.0.10'
     compile 'com.android.support.test.espresso:espresso-core:2.1'
+    testCompile 'org.easytesting:fest-assert-core:2.0M10'
+    testCompile 'org.mockito:mockito-core:1.10.19'
 }
 
 publish {
@@ -28,7 +30,7 @@ publish {
     userOrg = 'novoda'
     groupId = 'com.novoda'
     artifactId = 'rxpresso'
-    publishVersion = '0.1.3'
+    publishVersion = '0.1.4'
     description = 'Easy espresso testing for projects using RxJava'
     website = 'https://github.com/novoda/rxpresso'
 }

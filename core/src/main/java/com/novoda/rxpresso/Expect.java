@@ -32,6 +32,9 @@ public class Expect<T> implements IdlingResource {
 
     /**
      * Injects the events from {@code source} into the mocked {@code observable} and wait for an event matching {@code matcher}
+     * If no event matching {@code matcher} goes through the {@code observable} then the test hangs until an event {@code onCompleted}
+     * is emitted by the Observable at this points an exception is thrown.
+     *
      * @param matcher A matcher defining what event we are expecting to receive.
      * @return A Then object to chain any Espresso actions to execute once {@code observable} received an event matching {@code matcher}
      */
@@ -43,19 +46,53 @@ public class Expect<T> implements IdlingResource {
         return new Then();
     }
 
+    /**
+     * Injects the events from {@code source} into the mocked {@code observable} and wait for an event matching {@code matcher}
+     * If an event not matching {@code matcher} is received an exception is thrown.
+     *
+     * @param matcher A matcher defining what event we are expecting to receive.
+     * @return A Then object to chain any Espresso actions to execute once {@code observable} received an event matching {@code matcher}
+     */
+    public Then expectOnly(RxMatcher<Notification<T>> matcher) {
+        expectOnlyMatching(matcher);
+        RxMocks.with(repo)
+                .sendEventsFrom(source)
+                .to(observable);
+        return new Then();
+    }
+
     private void expectAnyMatching(RxMatcher<Notification<T>> matcher) {
         RxErrorRethrower.register();
         idle.compareAndSet(true, false);
         subscription = RxMocks.with(repo)
                 .getEventsFor(observable)
-                .subscribe(RxExpect.expect(matcher, new Action1<Notification<T>>() {
-                    @Override
-                    public void call(Notification<T> notification) {
-                        subscription.unsubscribe();
-                        RxErrorRethrower.unregister();
-                        transitionToIdle();
-                    }
-                }));
+                .subscribe(
+                        RxExpect.expect(
+                                matcher, new Action1<Notification<T>>() {
+                                    @Override
+                                    public void call(Notification<T> notification) {
+                                        subscription.unsubscribe();
+                                        RxErrorRethrower.unregister();
+                                        transitionToIdle();
+                                    }
+                                }));
+    }
+
+    private void expectOnlyMatching(RxMatcher<Notification<T>> matcher) {
+        RxErrorRethrower.register();
+        idle.compareAndSet(true, false);
+        subscription = RxMocks.with(repo)
+                .getEventsFor(observable)
+                .subscribe(
+                        RxExpect.expectOnly(
+                                matcher, new Action1<Notification<T>>() {
+                                    @Override
+                                    public void call(Notification<T> notification) {
+                                        subscription.unsubscribe();
+                                        RxErrorRethrower.unregister();
+                                        transitionToIdle();
+                                    }
+                                }));
     }
 
     private void transitionToIdle() {
