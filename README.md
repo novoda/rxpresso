@@ -26,7 +26,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        androidTestCompile 'com.novoda:rxpresso:0.1.2'
+        androidTestCompile 'com.novoda:rxpresso:0.1.3'
     }
 }
 ```
