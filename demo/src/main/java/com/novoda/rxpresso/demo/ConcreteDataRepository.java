@@ -23,7 +23,6 @@ public class ConcreteDataRepository implements DataRepository {
                             while ((inputLine = in.readLine()) != null) {
                                 response.append(inputLine);
                             }
-                            in.close();
                             subscriber.onNext(Integer.parseInt(response.toString()));
                         } catch (IOException e) {
                             subscriber.onError(e);

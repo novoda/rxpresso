@@ -60,7 +60,7 @@ public class SampleTest {
     }
 
     @Test
-    public void whenAnErrorOccursanErrorDialogIsDisplayedShowingErrorMessage() throws Exception {
+    public void whenAnErrorOccursAnErrorDialogIsDisplayedShowingErrorMessage() throws Exception {
         rxPresso.given(mockedRepo.getRandomNumber(10))
                 .withEventsFrom(SimpleEvents.<Integer>onError(new IOException("Not random enough ?!")))
                 .expect(anyError(Integer.class, IOException.class))
