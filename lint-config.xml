@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+
+  <issue id="InvalidPackage">
+    <!--Invalid package reference in library; not included in Android: javax.inject. Referenced from com.android.support.test.deps.dagger.internal.Keys.1.-->
+    <ignore regexp="javax.inject" />
+  </issue>
+
+</lint>

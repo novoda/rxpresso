@@ -1,0 +1,34 @@
+apply plugin: 'com.android.library'
+apply plugin: 'bintray-release'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 22
+    }
+    lintOptions {
+        lintConfig file("lint-config.xml")
+    }
+    packagingOptions {
+        exclude 'LICENSE.txt'
+    }
+}
+
+dependencies {
+    compile 'com.novoda:rxmocks:0.1.2'
+    compile 'io.reactivex:rxjava:1.0.10'
+    compile 'com.android.support.test.espresso:espresso-core:2.1'
+}
+
+publish {
+    repoName = 'maven'
+    userOrg = 'novoda'
+    groupId = 'com.novoda'
+    artifactId = 'rxpresso'
+    publishVersion = '0.1.2'
+    description = 'Easy espresso testing for projects using RxJava'
+    website = 'https://github.com/novoda/project-d/tree/develop/rxpresso'
+}
