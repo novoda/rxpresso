@@ -6,7 +6,7 @@ Easy Espresso UI testing for Android applications using RxJava.
 
 RxPresso makes testing your presentation layer using RxJava as easy as a Unit test.
 
-RxPresso uses RxMocks to generate mocks of your repositories that you can use with RxPresso to control data in your Espresso tests.
+RxPresso uses [RxMocks](https://github.com/novoda/rxmocks) to generate mocks of your repositories that you can use with RxPresso to control data in your Espresso tests.
 The binding with Espresso Idling resource is handled for you so Espresso will wait until the data you expect to inject in your UI
 has been delivered to you UI.
 
