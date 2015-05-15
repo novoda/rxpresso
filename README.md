@@ -1,10 +1,10 @@
 # RxPresso [![](https://ci.novoda.com/buildStatus/icon?job=rxpresso)](https://ci.novoda.com/job/rxpresso/lastBuild/console) [![Apache Licence 2.0](https://raw.githubusercontent.com/novoda/novoda/master/assets/btn_apache_lisence.png)](LICENSE.txt)
 
-Mocks/Assertions for RxJava testing
+Easy Espresso UI testing for Android applications using RxJava.
 
 ## Description
 
-RxPresso makes Espresso testing easy for applications using RxJava.
+RxPresso makes testing your presentation layer using RxJava as easy as a Unit test.
 
 RxPresso uses RxMocks to generate mocks of your repositories that you can use with RxPresso to control data in your Espresso tests.
 The binding with Espresso Idling resource is handled for you so Espresso will wait until the data you expect to inject in your UI
@@ -41,7 +41,7 @@ You can now use this interface to generate a mock as shown below.
 ```java
 public interface DataRepository {
 
-    Observable<User> getUser(String name);
+    Observable<User> getUser(String id);
 
     Observable<Articles> getArticles();
 
@@ -68,7 +68,7 @@ Espresso.registerIdlingResources(rxPresso);
 
 **Use it to inject data in your UI**
 ```java
-rxPresso.given(mockedRepo.getUser("some name"))
+rxPresso.given(mockedRepo.getUser("id"))
            .withEventsFrom(Observable.just(new User("some name")))
            .expect(any(User.class))
            .thenOnView(withText(containsString("some name")))
@@ -77,9 +77,9 @@ rxPresso.given(mockedRepo.getUser("some name"))
 
 **Use it to inject data from local sources**
 ```java
-Observable<User> testAssetObservable = testAssetRepo.getUser("some name");
+Observable<User> testAssetObservable = testAssetRepo.getUser("id");
 
-rxPresso.given(mockedRepo.getUser("some name"))
+rxPresso.given(mockedRepo.getUser("id"))
            .withEventsFrom(testAssetObservable)
            .expect(any(User.class))
            .thenOnView(withText(containsString("some name")))
@@ -88,9 +88,9 @@ rxPresso.given(mockedRepo.getUser("some name"))
 
 **Use custom matchers**
 ```java
-Observable<User> testAssetObservable = testAssetRepo.getUser("some name");
+Observable<User> testAssetObservable = testAssetRepo.getUser("id");
 
-rxPresso.given(mockedRepo.getUser("some name"))
+rxPresso.given(mockedRepo.getUser("id"))
            .withEventsFrom(testAssetObservable)
            .expect(new RxMatcher<Notification<User>>() {
                    @Override
@@ -109,7 +109,7 @@ rxPresso.given(mockedRepo.getUser("some name"))
 
 **Use it to inject errors in your UI**
 ```java
-rxPresso.given(mockedRepo.getUser("some name"))
+rxPresso.given(mockedRepo.getUser("id"))
            .withEventsFrom(Observable.error(new CustomError()))
            .expect(anyError(User.class, CustomError.class))
            .thenOnView(withText(containsString("Custom Error Message")))
