@@ -71,7 +71,7 @@ Espresso.registerIdlingResources(rxPresso);
 rxPresso.given(mockedRepo.getUser("id"))
            .withEventsFrom(Observable.just(new User("some name")))
            .expect(any(User.class))
-           .thenOnView(withText(containsString("some name")))
+           .thenOnView(withText("some name"))
            .perform(click());
 ```
 
@@ -82,7 +82,7 @@ Observable<User> testAssetObservable = testAssetRepo.getUser("id");
 rxPresso.given(mockedRepo.getUser("id"))
            .withEventsFrom(testAssetObservable)
            .expect(any(User.class))
-           .thenOnView(withText(containsString("some name")))
+           .thenOnView(withText("some name"))
            .perform(click());
 ```
 
@@ -103,7 +103,7 @@ rxPresso.given(mockedRepo.getUser("id"))
                        return "User with name " + "some name";
                    }
            })
-           .thenOnView(withText(containsString("some name")))
+           .thenOnView(withText("some name"))
            .perform(click());
 ```
 
@@ -112,7 +112,7 @@ rxPresso.given(mockedRepo.getUser("id"))
 rxPresso.given(mockedRepo.getUser("id"))
            .withEventsFrom(Observable.error(new CustomError()))
            .expect(anyError(User.class, CustomError.class))
-           .thenOnView(withText(containsString("Custom Error Message")))
+           .thenOnView(withText("Custom Error Message"))
            .matches(isDisplayed());
 ```
 
