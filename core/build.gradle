@@ -30,7 +30,7 @@ publish {
     userOrg = 'novoda'
     groupId = 'com.novoda'
     artifactId = 'rxpresso'
-    publishVersion = '0.1.4'
+    publishVersion = '0.1.5'
     description = 'Easy espresso testing for projects using RxJava'
     website = 'https://github.com/novoda/rxpresso'
 }
