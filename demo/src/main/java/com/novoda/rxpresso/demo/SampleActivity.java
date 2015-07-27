@@ -8,6 +8,7 @@ import android.widget.TextView;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class SampleActivity extends Activity {
 
@@ -27,6 +28,7 @@ public class SampleActivity extends Activity {
     protected void onResume() {
         super.onResume();
         subscription = dataRepository.getRandomNumber(10)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new IntegerObserver());
     }
