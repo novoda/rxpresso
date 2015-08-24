@@ -2,16 +2,18 @@ package com.novoda.rxpresso;
 
 import android.support.test.espresso.IdlingResource;
 
+import com.novoda.rxpresso.mock.RxMocks;
+
 import rx.Observable;
 
 public class With<T> implements IdlingResource {
 
-    private final Object repo;
+    private final RxMocks repo;
     private final Observable<T> observable;
     private ResourceCallback resourceCallback;
     private Expect<T> expect;
 
-    With(Object repo, Observable<T> observable) {
+    With(RxMocks repo, Observable<T> observable) {
         this.repo = repo;
         this.observable = observable;
     }

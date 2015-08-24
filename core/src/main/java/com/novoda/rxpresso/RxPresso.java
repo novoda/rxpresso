@@ -2,7 +2,7 @@ package com.novoda.rxpresso;
 
 import android.support.test.espresso.IdlingResource;
 
-import com.novoda.rxmocks.RxMocks;
+import com.novoda.rxpresso.mock.RxMocks;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,9 +11,9 @@ import java.util.List;
 import rx.Observable;
 import rx.functions.Func1;
 
-public class RxPresso implements IdlingResource {
+public final class RxPresso implements IdlingResource {
 
-    private final Object[] repositories;
+    private final List<RxMocks> repositories;
     private final List<IdlingResource> pendingResources = Collections.synchronizedList(new ArrayList<IdlingResource>());
 
     private ResourceCallback resourceCallback;
@@ -21,31 +21,41 @@ public class RxPresso implements IdlingResource {
     /**
      * @param repositories The different mocked repositories you want to control in your tests
      */
-    public RxPresso(Object... repositories) {
-        this.repositories = repositories;
+    public static RxPresso init(Object... repositories) {
+        return new RxPresso(Observable.from(repositories).map(asMockRepoFoo).toList().toBlocking().first());
     }
 
     /**
-     /**
-     * Initiate an action on the given mocked {@code observable}
-     * @param observable The mocked observable to work with
-     * @param <T> The type of the observable
-     * @return The With object to interact with the given mocked {@code observable}
+     * @param repositories The different mocked repositories you want to control in your tests
      */
+    private RxPresso(List<RxMocks> repositories) {
+        this.repositories = repositories;
+    }
+
     public <T> With<T> given(Observable<T> observable) {
-        Object repo = Observable.from(repositories).filter(provides(observable)).toBlocking().first();
+        RxMocks repo = Observable.from(repositories).filter(provides(observable)).toBlocking().first();
         final With<T> with = new With<>(repo, observable);
         pendingResources.add(with);
-        with.registerIdleTransitionCallback(new ResourceCallback() {
-            @Override
-            public void onTransitionToIdle() {
-                pendingResources.remove(with);
-                if (pendingResources.isEmpty()) {
-                    resourceCallback.onTransitionToIdle();
-                }
-            }
-        });
+        with.registerIdleTransitionCallback(
+                new ResourceCallback() {
+                    @Override
+                    public void onTransitionToIdle() {
+                        pendingResources.remove(with);
+                        if (pendingResources.isEmpty()) {
+                            resourceCallback.onTransitionToIdle();
+                        }
+                    }
+                });
         return with;
+    }
+
+    private <T> Func1<? super RxMocks, Boolean> provides(final Observable<T> observable) {
+        return new Func1<RxMocks, Boolean>() {
+            @Override
+            public Boolean call(RxMocks rxMocks) {
+                return rxMocks.provides(observable);
+            }
+        };
     }
 
     @Override
@@ -66,22 +76,10 @@ public class RxPresso implements IdlingResource {
         this.resourceCallback = resourceCallback;
     }
 
-    /**
-     * Resets all the mocked observables from the repositories registered by RxPresso
-     */
     public void resetMocks() {
-        for (Object repo : repositories) {
-            RxMocks.with(repo).resetMocks();
+        for (RxMocks repository : repositories) {
+            repository.resetMocks();
         }
-    }
-
-    private static <T> Func1<Object, Boolean> provides(final Observable<T> observable) {
-        return new Func1<Object, Boolean>() {
-            @Override
-            public Boolean call(Object repo) {
-                return RxMocks.with(repo).provides(observable);
-            }
-        };
     }
 
     private static Func1<IdlingResource, Boolean> isIdle = new Func1<IdlingResource, Boolean>() {
@@ -91,4 +89,10 @@ public class RxPresso implements IdlingResource {
         }
     };
 
+    private static Func1<Object, RxMocks> asMockRepoFoo = new Func1<Object, RxMocks>() {
+        @Override
+        public RxMocks call(Object object) {
+            return RxMocks.init(object);
+        }
+    };
 }

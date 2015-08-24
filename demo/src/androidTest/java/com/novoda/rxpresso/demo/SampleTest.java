@@ -5,22 +5,20 @@ import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.novoda.rxmocks.RxMocks;
-import com.novoda.rxmocks.SimpleEvents;
 import com.novoda.rxpresso.RxPresso;
+import com.novoda.rxpresso.mock.SimpleEvents;
 
 import java.io.IOException;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.novoda.rxmocks.RxExpect.any;
-import static com.novoda.rxmocks.RxExpect.anyError;
+import static android.support.test.espresso.matcher.ViewMatchers.*;
+import static com.novoda.rxpresso.matcher.RxExpect.any;
+import static com.novoda.rxpresso.matcher.RxExpect.anyError;
 import static org.hamcrest.Matchers.containsString;
 
 @RunWith(AndroidJUnit4.class)
@@ -35,10 +33,10 @@ public class SampleTest {
         protected void beforeActivityLaunched() {
             SampleApplication application = (SampleApplication) InstrumentationRegistry.getTargetContext().getApplicationContext();
 
-            mockedRepo = RxMocks.mock(DataRepository.class);
+            mockedRepo = Mockito.mock(DataRepository.class);
             application.setRepository(mockedRepo);
 
-            rxPresso = new RxPresso(mockedRepo);
+            rxPresso = RxPresso.init(mockedRepo);
             Espresso.registerIdlingResources(rxPresso);
         }
 

@@ -2,19 +2,19 @@ package com.novoda.rxpresso;
 
 import android.support.test.espresso.IdlingResource;
 
-import com.novoda.rxmocks.RxMatcher;
-import com.novoda.rxmocks.RxMocks;
-import com.novoda.rxmocks.SimpleEvents;
+import com.novoda.rxpresso.matcher.RxMatcher;
+import com.novoda.rxpresso.mock.SimpleEvents;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.Mockito;
 
 import rx.Notification;
 import rx.Observable;
 
-import static com.novoda.rxmocks.RxExpect.any;
+import static com.novoda.rxpresso.matcher.RxExpect.any;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -28,9 +28,9 @@ public class RxPressoTest {
 
     @Before
     public void setUp() throws Exception {
-        mockedRepo = RxMocks.mock(TestRepository.class);
+        mockedRepo = Mockito.mock(TestRepository.class);
         resourceCallback = mock(IdlingResource.ResourceCallback.class);
-        rxPresso = new RxPresso(mockedRepo);
+        rxPresso = RxPresso.init(mockedRepo);
         rxPresso.registerIdleTransitionCallback(resourceCallback);
     }
 
