@@ -6,13 +6,11 @@ Easy Espresso UI testing for Android applications using RxJava.
 
 RxPresso makes testing your presentation layer using RxJava as easy as a Unit test.
 
-RxPresso uses [RxMocks](https://github.com/novoda/rxmocks) to generate mocks of your repositories that you can use with RxPresso to control data in your Espresso tests.
+RxPresso uses [Mockito](http://mockito.org/) to generate mocks of your repositories that you can use with RxPresso to control data in your Espresso tests.
 The binding with Espresso Idling resource is handled for you so Espresso will wait until the data you expect to inject in your UI
 has been delivered to you UI.
 
 No more data you don't control in your Espresso test.
-
-At the moment this will only mock methods from the interface returning observables (see Future improvements section).
 
 This project is in its early stages, feel free to comment, and contribute back to help us improve it.
 
@@ -26,7 +24,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        androidTestCompile 'com.novoda:rxpresso:0.1.5'
+        androidTestCompile 'com.novoda:rxpresso:0.2.0'
     }
 }
 ```
@@ -34,10 +32,9 @@ buildscript {
 
 ## Simple usage
 
-To generate a mocked repo use an interface providing Observables as an abstraction for your repo.
-You can now use this interface to generate a mock as shown below.
+To generate a mocked repo use simply use Mockito.
 
-**Interfaced repository**
+**Example repository**
 ```java
 public interface DataRepository {
 
@@ -50,7 +47,7 @@ public interface DataRepository {
 
 **Mocking this repository**
 ```java
-DataRepository mockedRepo = RxMocks.mock(DataRepository.class)
+DataRepository mockedRepo = Mockito.mock(DataRepository.class)
 ```
 
 You should then replace the repository used by your activities by this mocked one.
@@ -62,7 +59,7 @@ Any other option as long as your UI reads from the mocked repo.
 ```java
 DataRepository mockedRepo = getSameRepoUsedByUi();
 
-RxPresso rxpresso = new RxPresso(mockedRepo);
+RxPresso rxpresso = RxPresso.init(mockedRepo);
 Espresso.registerIdlingResources(rxPresso);
 ```
 
@@ -131,13 +128,9 @@ DataRepository mockedRepo = getSameRepoUsedByUi();
 AnotherDataRepository mockedRepo2 = getSameSecondRepoUsedByUi();
 
 
-RxPresso rxpresso = new RxPresso(mockedRepo, mockedRepo2);
+RxPresso rxpresso = RxPresso.init(mockedRepo, mockedRepo2);
 Espresso.registerIdlingResources(rxPresso);
 ```
-
-## Future improvements
-
-- Support "spying" to allow for non mocked calls to be forwarded to actual implementation.
 
 ## Links
 
