@@ -32,7 +32,7 @@ buildscript {
 
 ## Simple usage
 
-To generate a mocked repo use simply use Mockito.
+To generate a mocked repo simply use Mockito.
 
 **Example repository**
 ```java
