@@ -57,7 +57,7 @@ public class Expect<T> implements IdlingResource {
         return new Then();
     }
 
-    private void expectAnyMatching(final RxMatcher<Notification<T>> matcher) {
+    private void expectAnyMatching(RxMatcher<Notification<T>> matcher) {
         RxErrorRethrower.register();
         idle.compareAndSet(true, false);
 
@@ -74,7 +74,7 @@ public class Expect<T> implements IdlingResource {
                 ));
     }
 
-    private void expectOnlyMatching(final RxMatcher<Notification<T>> matcher) {
+    private void expectOnlyMatching(RxMatcher<Notification<T>> matcher) {
         RxErrorRethrower.register();
         idle.compareAndSet(true, false);
 

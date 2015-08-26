@@ -22,7 +22,7 @@ public final class RxPresso implements IdlingResource {
      * @param repositories The different mocked repositories you want to control in your tests
      */
     public static RxPresso init(Object... repositories) {
-        return new RxPresso(Observable.from(repositories).map(asMockRepoFoo).toList().toBlocking().first());
+        return new RxPresso(Observable.from(repositories).map(asRxMocks).toList().toBlocking().first());
     }
 
     /**
@@ -49,7 +49,7 @@ public final class RxPresso implements IdlingResource {
         return with;
     }
 
-    private <T> Func1<? super RxMocks, Boolean> provides(final Observable<T> observable) {
+    private static <T> Func1<? super RxMocks, Boolean> provides(final Observable<T> observable) {
         return new Func1<RxMocks, Boolean>() {
             @Override
             public Boolean call(RxMocks rxMocks) {
@@ -82,14 +82,14 @@ public final class RxPresso implements IdlingResource {
         }
     }
 
-    private static Func1<IdlingResource, Boolean> isIdle = new Func1<IdlingResource, Boolean>() {
+    private static final Func1<IdlingResource, Boolean> isIdle = new Func1<IdlingResource, Boolean>() {
         @Override
         public Boolean call(IdlingResource resource) {
             return resource.isIdleNow();
         }
     };
 
-    private static Func1<Object, RxMocks> asMockRepoFoo = new Func1<Object, RxMocks>() {
+    private static final Func1<Object, RxMocks> asRxMocks = new Func1<Object, RxMocks>() {
         @Override
         public RxMocks call(Object object) {
             return RxMocks.init(object);
