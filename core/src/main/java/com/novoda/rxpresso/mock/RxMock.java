@@ -112,25 +112,29 @@ public final class RxMock {
     }
 
     private void setupMockResponseFor(Method method) {
+        when(invoke(method)).thenAnswer(
+                new Answer<Observable>() {
+                    @Override
+                    public Observable answer(InvocationOnMock invocation) throws Throwable {
+                        String key = getKeyFor(invocation.getMethod(), invocation.getArguments());
+                        if (!observableHashMap.containsKey(key)) {
+                            initialiseMockedObservable(invocation.getMethod(), invocation.getArguments());
+                        }
+                        return observableHashMap.get(key);
+                    }
+                }
+        );
+    }
+
+    private Object invoke(Method method) {
         try {
-            when(method.invoke(mock, getArgumentsFor(method)))
-                    .thenAnswer(
-                            new Answer<Observable>() {
-                                @Override
-                                public Observable answer(InvocationOnMock invocation) throws Throwable {
-                                    String key = getKeyFor(invocation.getMethod(), invocation.getArguments());
-                                    if (!observableHashMap.containsKey(key)) {
-                                        initialiseMockedObservable(invocation.getMethod(), invocation.getArguments());
-                                    }
-                                    return observableHashMap.get(key);
-                                }
-                            }
-                    );
+            return method.invoke(mock, getArgumentsFor(method));
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     private Object[] getArgumentsFor(Method method) {
