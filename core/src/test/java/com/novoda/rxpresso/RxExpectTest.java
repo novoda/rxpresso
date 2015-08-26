@@ -12,7 +12,7 @@ import static com.novoda.rxpresso.matcher.RxExpect.*;
 
 public class RxExpectTest {
 
-    public @Rule
+    @Rule
     ExpectedException expectedException = ExpectedException.none();
 
     @Test
@@ -32,8 +32,6 @@ public class RxExpectTest {
         observableToTest.materialize()
                 .subscribe(expect(anyError(Integer.class)));
     }
-
-
 
     @Test
     public void expectOnlyMatchesAccordingToMatcher() throws Exception {
