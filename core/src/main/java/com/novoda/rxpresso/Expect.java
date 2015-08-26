@@ -17,15 +17,15 @@ import rx.plugins.RxErrorRethrower;
 public class Expect<T> implements IdlingResource {
 
     private final Observable<T> observable;
-    private final RxMock repo;
+    private final RxMock mock;
     private final Observable<T> source;
     private final AtomicBoolean idle = new AtomicBoolean(true);
 
     private Subscription subscription;
     private ResourceCallback resourceCallback;
 
-    Expect(RxMock repo, Observable<T> source, Observable<T> observable) {
-        this.repo = repo;
+    Expect(RxMock mock, Observable<T> source, Observable<T> observable) {
+        this.mock = mock;
         this.source = source;
         this.observable = observable;
     }
@@ -40,7 +40,7 @@ public class Expect<T> implements IdlingResource {
      */
     public Then expect(RxMatcher<Notification<T>> matcher) {
         expectAnyMatching(matcher);
-        repo.sendEventsFrom(source).to(observable);
+        mock.sendEventsFrom(source).to(observable);
         return new Then();
     }
 
@@ -53,7 +53,7 @@ public class Expect<T> implements IdlingResource {
      */
     public Then expectOnly(RxMatcher<Notification<T>> matcher) {
         expectOnlyMatching(matcher);
-        repo.sendEventsFrom(source).to(observable);
+        mock.sendEventsFrom(source).to(observable);
         return new Then();
     }
 
@@ -61,7 +61,7 @@ public class Expect<T> implements IdlingResource {
         RxErrorRethrower.register();
         idle.compareAndSet(true, false);
 
-        subscription = repo.getEventsFor(observable).subscribe(
+        subscription = mock.getEventsFor(observable).subscribe(
                 RxExpect.expect(
                         matcher, new Action1<Notification<T>>() {
                             @Override
@@ -79,7 +79,7 @@ public class Expect<T> implements IdlingResource {
         RxErrorRethrower.register();
         idle.compareAndSet(true, false);
 
-        subscription = repo.getEventsFor(observable).subscribe(
+        subscription = mock.getEventsFor(observable).subscribe(
                 RxExpect.expectOnly(
                         matcher, new Action1<Notification<T>>() {
                             @Override

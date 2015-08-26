@@ -8,13 +8,13 @@ import rx.Observable;
 
 public class With<T> implements IdlingResource {
 
-    private final RxMock repo;
+    private final RxMock mock;
     private final Observable<T> observable;
     private ResourceCallback resourceCallback;
     private Expect<T> expect;
 
-    With(RxMock repo, Observable<T> observable) {
-        this.repo = repo;
+    With(RxMock mock, Observable<T> observable) {
+        this.mock = mock;
         this.observable = observable;
     }
 
@@ -25,7 +25,7 @@ public class With<T> implements IdlingResource {
      * @return An Expect object to trigger the injection and setup what event to expect and wait for.
      */
     public Expect<T> withEventsFrom(Observable<T> source) {
-        expect = new Expect<>(repo, source, observable);
+        expect = new Expect<>(mock, source, observable);
         expect.registerIdleTransitionCallback(
                 new ResourceCallback() {
                     @Override

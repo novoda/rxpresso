@@ -78,8 +78,8 @@ public final class RxPresso implements IdlingResource {
     }
 
     public void resetMocks() {
-        for (RxMock repository : mocks) {
-            repository.resetMocks();
+        for (RxMock mock : mocks) {
+            mock.resetMocks();
         }
     }
 

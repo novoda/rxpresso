@@ -17,18 +17,18 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 public class RxMocksTest {
 
-    private TestRepository baseRepo;
+    private TestRepository mockedRepo;
     private RxMock rxMock;
 
     @Before
     public void setUp() throws Exception {
-        baseRepo = Mockito.mock(TestRepository.class);
-        rxMock = RxMock.from(baseRepo);
+        mockedRepo = Mockito.mock(TestRepository.class);
+        rxMock = RxMock.from(mockedRepo);
     }
 
     @Test
     public void itSendsEventsToMockedObservable() throws Exception {
-        Observable<Integer> foo = baseRepo.foo(3);
+        Observable<Integer> foo = mockedRepo.foo(3);
 
         rxMock.sendEventsFrom(SimpleEvents.onNext(42))
                 .to(foo);
@@ -40,8 +40,8 @@ public class RxMocksTest {
 
     @Test
     public void itSendsEventsToMockedObservableAccordingToParameter() throws Exception {
-        Observable<Integer> foo = baseRepo.foo(3);
-        Observable<Integer> bar = baseRepo.foo(1);
+        Observable<Integer> foo = mockedRepo.foo(3);
+        Observable<Integer> bar = mockedRepo.foo(1);
 
         rxMock.sendEventsFrom(SimpleEvents.onNext(42))
                 .to(foo);
@@ -57,7 +57,7 @@ public class RxMocksTest {
 
     @Test
     public void itDeterminesWetherAnObservableIsProvidedByAGivenRepository() throws Exception {
-        Observable<Integer> foo = baseRepo.foo(3);
+        Observable<Integer> foo = mockedRepo.foo(3);
 
         boolean result = rxMock.provides(foo);
         boolean result2 = rxMock.provides(Observable.just(1));
@@ -68,22 +68,22 @@ public class RxMocksTest {
 
     @Test
     public void itProvidesTheSameObservableForTheSameMethodParamCombination() throws Exception {
-        Observable<Integer> foo = baseRepo.foo(3);
-        Observable<Integer> bar = baseRepo.foo(3);
+        Observable<Integer> foo = mockedRepo.foo(3);
+        Observable<Integer> bar = mockedRepo.foo(3);
 
         assertThat(foo).isEqualTo(bar);
     }
 
     @Test
     public void resetMocksResetsPipelines() throws Exception {
-        Observable<Integer> foo = baseRepo.foo(3);
+        Observable<Integer> foo = mockedRepo.foo(3);
 
         rxMock.sendEventsFrom(SimpleEvents.onNext(42))
                 .to(foo);
 
         rxMock.resetMocks();
 
-        Observable<Integer> bar = baseRepo.foo(3);
+        Observable<Integer> bar = mockedRepo.foo(3);
 
         rxMock.sendEventsFrom(SimpleEvents.<Integer>onCompleted())
                 .to(bar);
@@ -95,7 +95,7 @@ public class RxMocksTest {
 
     @Test
     public void getEventsForDoesNotAffectSubscriptionToMockeObservables() throws Exception {
-        Observable<Integer> foo = baseRepo.foo(3);
+        Observable<Integer> foo = mockedRepo.foo(3);
 
         final Notification<Integer>[] test = (Notification<Integer>[]) Array.newInstance(Notification.class, 1);
         rxMock.getEventsFor(foo)
