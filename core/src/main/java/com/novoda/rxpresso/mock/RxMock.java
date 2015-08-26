@@ -29,26 +29,26 @@ import static org.mockito.Mockito.when;
 
 public final class RxMock {
 
-    private final Object repository;
+    private final Object mock;
     private final Map<String, Observable> observableHashMap = new HashMap<>();
     private final Map<Observable, Pair<ClearableBehaviorSubject<Notification>, PublishSubject<Notification>>> mapSubject = new HashMap<>();
 
     public static RxMock mock(Class clazz) {
-        return init(Mockito.mock(clazz));
+        return from(Mockito.mock(clazz));
     }
 
-    public static RxMock init(Object repository) {
-        RxMock rxMock = new RxMock(repository);
+    public static RxMock from(Object mock) {
+        RxMock rxMock = new RxMock(mock);
         rxMock.setMockResponses();
         return rxMock;
     }
 
-    private RxMock(Object repository) {
-        this.repository = repository;
+    private RxMock(Object mock) {
+        this.mock = mock;
     }
 
     private void setMockResponses() {
-        for (Method method : repository.getClass().getMethods()) {
+        for (Method method : mock.getClass().getMethods()) {
             if (method.getReturnType().equals(Observable.class) && isMockable(method)) {
                 setupMockResponseFor(method);
             }
@@ -113,7 +113,7 @@ public final class RxMock {
 
     private void setupMockResponseFor(Method method) {
         try {
-            when(method.invoke(repository, getArgumentsFor(method)))
+            when(method.invoke(mock, getArgumentsFor(method)))
                     .thenAnswer(
                             new Answer<Observable>() {
                                 @Override

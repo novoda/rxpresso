@@ -13,28 +13,28 @@ import rx.functions.Func1;
 
 public final class RxPresso implements IdlingResource {
 
-    private final List<RxMock> repositories;
+    private final List<RxMock> mocks;
     private final List<IdlingResource> pendingResources = Collections.synchronizedList(new ArrayList<IdlingResource>());
 
     private ResourceCallback resourceCallback;
 
     /**
-     * @param repositories The different mocked repositories you want to control in your tests
+     * @param mocks The different mocked repositories you want to control in your tests
      */
-    public static RxPresso init(Object... repositories) {
-        return new RxPresso(Observable.from(repositories).map(asRxMocks).toList().toBlocking().first());
+    public static RxPresso from(Object... mocks) {
+        return new RxPresso(Observable.from(mocks).map(asRxMocks).toList().toBlocking().first());
     }
 
     /**
-     * @param repositories The different mocked repositories you want to control in your tests
+     * @param mocks The different mocked repositories you want to control in your tests
      */
-    private RxPresso(List<RxMock> repositories) {
-        this.repositories = repositories;
+    private RxPresso(List<RxMock> mocks) {
+        this.mocks = mocks;
     }
 
     public <T> With<T> given(Observable<T> observable) {
-        RxMock repo = Observable.from(repositories).filter(provides(observable)).toBlocking().first();
-        final With<T> with = new With<>(repo, observable);
+        RxMock mock = Observable.from(mocks).filter(provides(observable)).toBlocking().first();
+        final With<T> with = new With<>(mock, observable);
         pendingResources.add(with);
         with.registerIdleTransitionCallback(
                 new ResourceCallback() {
@@ -77,7 +77,7 @@ public final class RxPresso implements IdlingResource {
     }
 
     public void resetMocks() {
-        for (RxMock repository : repositories) {
+        for (RxMock repository : mocks) {
             repository.resetMocks();
         }
     }
@@ -92,7 +92,7 @@ public final class RxPresso implements IdlingResource {
     private static final Func1<Object, RxMock> asRxMocks = new Func1<Object, RxMock>() {
         @Override
         public RxMock call(Object object) {
-            return RxMock.init(object);
+            return RxMock.from(object);
         }
     };
 }

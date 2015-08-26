@@ -36,7 +36,7 @@ public class SampleTest {
             mockedRepo = Mockito.mock(DataRepository.class);
             application.setRepository(mockedRepo);
 
-            rxPresso = RxPresso.init(mockedRepo);
+            rxPresso = RxPresso.from(mockedRepo);
             Espresso.registerIdlingResources(rxPresso);
         }
 

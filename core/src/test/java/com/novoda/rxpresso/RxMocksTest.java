@@ -23,7 +23,7 @@ public class RxMocksTest {
     @Before
     public void setUp() throws Exception {
         baseRepo = Mockito.mock(TestRepository.class);
-        rxMock = RxMock.init(baseRepo);
+        rxMock = RxMock.from(baseRepo);
     }
 
     @Test

@@ -30,7 +30,7 @@ public class RxPressoTest {
     public void setUp() throws Exception {
         mockedRepo = Mockito.mock(TestRepository.class);
         resourceCallback = mock(IdlingResource.ResourceCallback.class);
-        rxPresso = RxPresso.init(mockedRepo);
+        rxPresso = RxPresso.from(mockedRepo);
         rxPresso.registerIdleTransitionCallback(resourceCallback);
     }
 
