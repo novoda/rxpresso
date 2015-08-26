@@ -3,7 +3,7 @@ package com.novoda.rxpresso;
 import android.support.test.espresso.IdlingResource;
 
 import com.novoda.rxpresso.matcher.RxMatcher;
-import com.novoda.rxpresso.mock.SimpleEvents;
+import com.novoda.rxpresso.mock.SingleEvent;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -39,7 +39,7 @@ public class RxPressoTest {
         Observable<Integer> foo = mockedRepo.foo(3);
 
         rxPresso.given(foo)
-                .withEventsFrom(SimpleEvents.onNext(42))
+                .withEventsFrom(SingleEvent.onNext(42))
                 .expect(any(Integer.class));
 
         Integer result = foo.toBlocking().first();
@@ -53,10 +53,10 @@ public class RxPressoTest {
         Observable<Integer> bar = mockedRepo.foo(1);
 
         rxPresso.given(foo)
-                .withEventsFrom(SimpleEvents.onNext(42))
+                .withEventsFrom(SingleEvent.onNext(42))
                 .expect(any(Integer.class));
         rxPresso.given(bar)
-                .withEventsFrom(SimpleEvents.onNext(24))
+                .withEventsFrom(SingleEvent.onNext(24))
                 .expect(any(Integer.class));
 
         Integer result = foo.toBlocking().first();
@@ -71,7 +71,7 @@ public class RxPressoTest {
         Observable<Integer> foo = mockedRepo.foo(3);
 
         rxPresso.given(foo)
-                .withEventsFrom(SimpleEvents.onNext(42))
+                .withEventsFrom(SingleEvent.onNext(42))
                 .expect(any(Integer.class));
 
         rxPresso.resetMocks();
@@ -79,7 +79,7 @@ public class RxPressoTest {
         Observable<Integer> bar = mockedRepo.foo(3);
 
         rxPresso.given(bar)
-                .withEventsFrom(SimpleEvents.<Integer>onCompleted())
+                .withEventsFrom(SingleEvent.<Integer>onCompleted())
                 .expect(
                         new RxMatcher<Notification<Integer>>() {
                             @Override
@@ -104,7 +104,7 @@ public class RxPressoTest {
         Observable<Integer> foo = mockedRepo.foo(3);
 
         rxPresso.given(foo)
-                .withEventsFrom(SimpleEvents.onNext(42))
+                .withEventsFrom(SingleEvent.onNext(42))
                 .expect(any(Integer.class));
 
         assertThat(rxPresso.isIdleNow()).isFalse();
@@ -120,7 +120,7 @@ public class RxPressoTest {
         Observable<Integer> foo = mockedRepo.foo(3);
 
         rxPresso.given(foo)
-                .withEventsFrom(SimpleEvents.<Integer>onCompleted())
+                .withEventsFrom(SingleEvent.<Integer>onCompleted())
                 .expect(any(Integer.class));
 
         Integer result = foo.toBlocking().first();

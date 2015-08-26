@@ -1,7 +1,7 @@
 package com.novoda.rxpresso;
 
 import com.novoda.rxpresso.mock.RxMock;
-import com.novoda.rxpresso.mock.SimpleEvents;
+import com.novoda.rxpresso.mock.SingleEvent;
 
 import java.lang.reflect.Array;
 
@@ -30,7 +30,7 @@ public class RxMocksTest {
     public void itSendsEventsToMockedObservable() throws Exception {
         Observable<Integer> foo = mockedRepo.foo(3);
 
-        rxMock.sendEventsFrom(SimpleEvents.onNext(42))
+        rxMock.sendEventsFrom(SingleEvent.onNext(42))
                 .to(foo);
 
         Integer result = foo.toBlocking().first();
@@ -43,9 +43,9 @@ public class RxMocksTest {
         Observable<Integer> foo = mockedRepo.foo(3);
         Observable<Integer> bar = mockedRepo.foo(1);
 
-        rxMock.sendEventsFrom(SimpleEvents.onNext(42))
+        rxMock.sendEventsFrom(SingleEvent.onNext(42))
                 .to(foo);
-        rxMock.sendEventsFrom(SimpleEvents.onNext(24))
+        rxMock.sendEventsFrom(SingleEvent.onNext(24))
                 .to(bar);
 
         Integer result = foo.toBlocking().first();
@@ -78,14 +78,14 @@ public class RxMocksTest {
     public void resetMocksResetsPipelines() throws Exception {
         Observable<Integer> foo = mockedRepo.foo(3);
 
-        rxMock.sendEventsFrom(SimpleEvents.onNext(42))
+        rxMock.sendEventsFrom(SingleEvent.onNext(42))
                 .to(foo);
 
         rxMock.resetMocks();
 
         Observable<Integer> bar = mockedRepo.foo(3);
 
-        rxMock.sendEventsFrom(SimpleEvents.<Integer>onCompleted())
+        rxMock.sendEventsFrom(SingleEvent.<Integer>onCompleted())
                 .to(bar);
 
         Boolean result = bar.isEmpty().toBlocking().first();
@@ -107,7 +107,7 @@ public class RxMocksTest {
                             }
                         });
 
-        rxMock.sendEventsFrom(SimpleEvents.onNext(42))
+        rxMock.sendEventsFrom(SingleEvent.onNext(42))
                 .to(foo);
 
         assertThat(test[0]).isNull();

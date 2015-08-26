@@ -6,7 +6,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.novoda.rxpresso.RxPresso;
-import com.novoda.rxpresso.mock.SimpleEvents;
+import com.novoda.rxpresso.mock.SingleEvent;
 
 import java.io.IOException;
 
@@ -51,7 +51,7 @@ public class SampleTest {
     @Test
     public void randomIntegerIsDisplayed() throws Exception {
         rxPresso.given(mockedRepo.getRandomNumber(10))
-                .withEventsFrom(SimpleEvents.onNext(3))
+                .withEventsFrom(SingleEvent.onNext(3))
                 .expect(any(Integer.class))
                 .thenOnView(withId(R.id.number))
                 .check(matches(withText(containsString(String.valueOf(3)))));
@@ -60,7 +60,7 @@ public class SampleTest {
     @Test
     public void whenAnErrorOccursAnErrorDialogIsDisplayedShowingErrorMessage() throws Exception {
         rxPresso.given(mockedRepo.getRandomNumber(10))
-                .withEventsFrom(SimpleEvents.<Integer>onError(new IOException("Not random enough ?!")))
+                .withEventsFrom(SingleEvent.<Integer>onError(new IOException("Not random enough ?!")))
                 .expect(anyError(Integer.class, IOException.class))
                 .thenOnView(withText("Not random enough ?!"))
                 .check(matches(isDisplayed()));

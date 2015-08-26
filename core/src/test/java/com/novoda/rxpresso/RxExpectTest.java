@@ -1,6 +1,6 @@
 package com.novoda.rxpresso;
 
-import com.novoda.rxpresso.mock.SimpleEvents;
+import com.novoda.rxpresso.mock.SingleEvent;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -37,7 +37,7 @@ public class RxExpectTest {
 
     @Test
     public void expectOnlyMatchesAccordingToMatcher() throws Exception {
-        Observable<Integer> observableToTest = SimpleEvents.onNext(42);
+        Observable<Integer> observableToTest = SingleEvent.onNext(42);
 
         observableToTest.materialize()
                 .subscribe(expectOnly(any(Integer.class)));

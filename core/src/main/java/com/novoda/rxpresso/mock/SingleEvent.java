@@ -2,9 +2,9 @@ package com.novoda.rxpresso.mock;
 
 import rx.Observable;
 
-public final class SimpleEvents {
+public final class SingleEvent {
 
-    private SimpleEvents() {
+    private SingleEvent() {
     }
 
     /**
