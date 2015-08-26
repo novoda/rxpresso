@@ -45,7 +45,8 @@ public final class RxPresso implements IdlingResource {
                             resourceCallback.onTransitionToIdle();
                         }
                     }
-                });
+                }
+        );
         return with;
     }
 

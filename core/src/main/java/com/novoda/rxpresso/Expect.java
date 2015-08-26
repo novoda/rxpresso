@@ -71,7 +71,8 @@ public class Expect<T> implements IdlingResource {
                                 transitionToIdle();
                             }
                         }
-                ));
+                )
+        );
     }
 
     private void expectOnlyMatching(RxMatcher<Notification<T>> matcher) {
@@ -88,7 +89,8 @@ public class Expect<T> implements IdlingResource {
                                 transitionToIdle();
                             }
                         }
-                ));
+                )
+        );
     }
 
     private void transitionToIdle() {

@@ -20,17 +20,20 @@ public class With<T> implements IdlingResource {
 
     /**
      * Setup the injection of the events from the {@code source} into the mocked {@code observable}
+     *
      * @param source An observable providing the events to inject
      * @return An Expect object to trigger the injection and setup what event to expect and wait for.
      */
     public Expect<T> withEventsFrom(Observable<T> source) {
         expect = new Expect<>(repo, source, observable);
-        expect.registerIdleTransitionCallback(new ResourceCallback() {
-            @Override
-            public void onTransitionToIdle() {
-                resourceCallback.onTransitionToIdle();
-            }
-        });
+        expect.registerIdleTransitionCallback(
+                new ResourceCallback() {
+                    @Override
+                    public void onTransitionToIdle() {
+                        resourceCallback.onTransitionToIdle();
+                    }
+                }
+        );
         return expect;
     }
 
