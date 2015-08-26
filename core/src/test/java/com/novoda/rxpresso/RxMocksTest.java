@@ -1,6 +1,6 @@
 package com.novoda.rxpresso;
 
-import com.novoda.rxpresso.mock.RxMocks;
+import com.novoda.rxpresso.mock.RxMock;
 import com.novoda.rxpresso.mock.SimpleEvents;
 
 import java.lang.reflect.Array;
@@ -18,19 +18,19 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class RxMocksTest {
 
     private TestRepository baseRepo;
-    private RxMocks rxMocks;
+    private RxMock rxMock;
 
     @Before
     public void setUp() throws Exception {
         baseRepo = Mockito.mock(TestRepository.class);
-        rxMocks = RxMocks.init(baseRepo);
+        rxMock = RxMock.init(baseRepo);
     }
 
     @Test
     public void itSendsEventsToMockedObservable() throws Exception {
         Observable<Integer> foo = baseRepo.foo(3);
 
-        rxMocks.sendEventsFrom(SimpleEvents.onNext(42))
+        rxMock.sendEventsFrom(SimpleEvents.onNext(42))
                 .to(foo);
 
         Integer result = foo.toBlocking().first();
@@ -43,9 +43,9 @@ public class RxMocksTest {
         Observable<Integer> foo = baseRepo.foo(3);
         Observable<Integer> bar = baseRepo.foo(1);
 
-        rxMocks.sendEventsFrom(SimpleEvents.onNext(42))
+        rxMock.sendEventsFrom(SimpleEvents.onNext(42))
                 .to(foo);
-        rxMocks.sendEventsFrom(SimpleEvents.onNext(24))
+        rxMock.sendEventsFrom(SimpleEvents.onNext(24))
                 .to(bar);
 
         Integer result = foo.toBlocking().first();
@@ -59,8 +59,8 @@ public class RxMocksTest {
     public void itDeterminesWetherAnObservableIsProvidedByAGivenRepository() throws Exception {
         Observable<Integer> foo = baseRepo.foo(3);
 
-        boolean result = rxMocks.provides(foo);
-        boolean result2 = rxMocks.provides(Observable.just(1));
+        boolean result = rxMock.provides(foo);
+        boolean result2 = rxMock.provides(Observable.just(1));
 
         assertThat(result).isTrue();
         assertThat(result2).isFalse();
@@ -78,14 +78,14 @@ public class RxMocksTest {
     public void resetMocksResetsPipelines() throws Exception {
         Observable<Integer> foo = baseRepo.foo(3);
 
-        rxMocks.sendEventsFrom(SimpleEvents.onNext(42))
+        rxMock.sendEventsFrom(SimpleEvents.onNext(42))
                 .to(foo);
 
-        rxMocks.resetMocks();
+        rxMock.resetMocks();
 
         Observable<Integer> bar = baseRepo.foo(3);
 
-        rxMocks.sendEventsFrom(SimpleEvents.<Integer>onCompleted())
+        rxMock.sendEventsFrom(SimpleEvents.<Integer>onCompleted())
                 .to(bar);
 
         Boolean result = bar.isEmpty().toBlocking().first();
@@ -98,7 +98,7 @@ public class RxMocksTest {
         Observable<Integer> foo = baseRepo.foo(3);
 
         final Notification<Integer>[] test = (Notification<Integer>[]) Array.newInstance(Notification.class, 1);
-        rxMocks.getEventsFor(foo)
+        rxMock.getEventsFor(foo)
                 .subscribe(
                         new Action1<Notification<Integer>>() {
                             @Override
@@ -107,7 +107,7 @@ public class RxMocksTest {
                             }
                         });
 
-        rxMocks.sendEventsFrom(SimpleEvents.onNext(42))
+        rxMock.sendEventsFrom(SimpleEvents.onNext(42))
                 .to(foo);
 
         assertThat(test[0]).isNull();

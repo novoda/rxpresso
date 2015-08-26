@@ -27,23 +27,23 @@ import static com.novoda.rxpresso.mock.Functions.infinite;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
-public final class RxMocks {
+public final class RxMock {
 
     private final Object repository;
     private final Map<String, Observable> observableHashMap = new HashMap<>();
     private final Map<Observable, Pair<ClearableBehaviorSubject<Notification>, PublishSubject<Notification>>> mapSubject = new HashMap<>();
 
-    public static RxMocks mock(Class clazz) {
+    public static RxMock mock(Class clazz) {
         return init(Mockito.mock(clazz));
     }
 
-    public static RxMocks init(Object repository) {
-        RxMocks rxMocks = new RxMocks(repository);
-        rxMocks.setMockResponses();
-        return rxMocks;
+    public static RxMock init(Object repository) {
+        RxMock rxMock = new RxMock(repository);
+        rxMock.setMockResponses();
+        return rxMock;
     }
 
-    private RxMocks(Object repository) {
+    private RxMock(Object repository) {
         this.repository = repository;
     }
 

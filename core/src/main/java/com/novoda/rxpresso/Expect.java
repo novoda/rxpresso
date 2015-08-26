@@ -4,7 +4,7 @@ import android.support.test.espresso.IdlingResource;
 
 import com.novoda.rxpresso.matcher.RxExpect;
 import com.novoda.rxpresso.matcher.RxMatcher;
-import com.novoda.rxpresso.mock.RxMocks;
+import com.novoda.rxpresso.mock.RxMock;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -17,14 +17,14 @@ import rx.plugins.RxErrorRethrower;
 public class Expect<T> implements IdlingResource {
 
     private final Observable<T> observable;
-    private final RxMocks repo;
+    private final RxMock repo;
     private final Observable<T> source;
     private final AtomicBoolean idle = new AtomicBoolean(true);
 
     private Subscription subscription;
     private ResourceCallback resourceCallback;
 
-    Expect(RxMocks repo, Observable<T> source, Observable<T> observable) {
+    Expect(RxMock repo, Observable<T> source, Observable<T> observable) {
         this.repo = repo;
         this.source = source;
         this.observable = observable;
