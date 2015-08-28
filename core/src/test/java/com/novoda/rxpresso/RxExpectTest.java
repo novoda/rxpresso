@@ -13,7 +13,7 @@ import static com.novoda.rxpresso.matcher.RxExpect.*;
 public class RxExpectTest {
 
     @Rule
-    ExpectedException expectedException = ExpectedException.none();
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void expectMatchesAccordingToMatcher() throws Exception {

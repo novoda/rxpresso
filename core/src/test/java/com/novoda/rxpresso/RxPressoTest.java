@@ -20,7 +20,8 @@ import static org.mockito.Mockito.mock;
 
 public class RxPressoTest {
 
-    public @Rule ExpectedException expectedException = ExpectedException.none();
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     private TestRepository mockedRepo;
     private RxPresso rxPresso;
