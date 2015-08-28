@@ -59,7 +59,7 @@ Any other option as long as your UI reads from the mocked repo.
 ```java
 DataRepository mockedRepo = getSameRepoUsedByUi();
 
-RxPresso rxpresso = RxPresso.init(mockedRepo);
+RxPresso rxpresso = RxPresso.from(mockedRepo);
 Espresso.registerIdlingResources(rxPresso);
 ```
 
@@ -128,7 +128,7 @@ DataRepository mockedRepo = getSameRepoUsedByUi();
 AnotherDataRepository mockedRepo2 = getSameSecondRepoUsedByUi();
 
 
-RxPresso rxpresso = RxPresso.init(mockedRepo, mockedRepo2);
+RxPresso rxpresso = RxPresso.from(mockedRepo, mockedRepo2);
 Espresso.registerIdlingResources(rxPresso);
 ```
 
