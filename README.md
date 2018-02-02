@@ -1,4 +1,4 @@
-# RxPresso [![CI status](https://ci.novoda.com/buildStatus/icon?job=rxpresso)](https://ci.novoda.com/job/rxpresso/lastBuild/console) [![Download from Bintray](https://api.bintray.com/packages/novoda/maven/rxpresso/images/download.svg)](https://bintray.com/novoda/maven/rxpresso/_latestVersion) [![Apache 2.0 Licence](https://img.shields.io/github/license/novoda/rxpresso.svg)](https://github.com/novoda/rxpresso/blob/master/LICENSE.txt)
+# RxPresso [![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/) [![CI status](https://ci.novoda.com/buildStatus/icon?job=rxpresso)](https://ci.novoda.com/job/rxpresso/lastBuild/console) [![Download from Bintray](https://api.bintray.com/packages/novoda/maven/rxpresso/images/download.svg)](https://bintray.com/novoda/maven/rxpresso/_latestVersion) [![Apache 2.0 Licence](https://img.shields.io/github/license/novoda/rxpresso.svg)](https://github.com/novoda/rxpresso/blob/master/LICENSE.txt)
 
 Easy Espresso UI testing for Android applications using RxJava.
 
